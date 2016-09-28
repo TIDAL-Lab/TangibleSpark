@@ -133,7 +133,7 @@ class Spark {
         connectorJSON.addAll(c.rightJoint.toJSON());
       }
     }
-    //print(JSON.encode(componentJSON));
+    print(JSON.encode(componentJSON));
   }
   
 }

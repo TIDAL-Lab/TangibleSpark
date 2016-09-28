@@ -75,6 +75,7 @@ function gotDevices(deviceInfos) {
       deviceId = deviceInfo.deviceId;
       videoConstraints.video.deviceId = deviceId;
       camcount++;
+      return;
     }
   }
   console.log("Found " + camcount + " cameras.");
