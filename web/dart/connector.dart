@@ -14,24 +14,46 @@ class Connector {
 
   Component parent;
 
-  List<Component> components = new List<Component>();
+  List<Connector> attached = new List<Connector>();
 
    
   Connector(this.parent);
 
 
   void clear() {
-    components.clear();
+    attached.clear();
+  }
+
+  List toJSON() {
+    List json = new List();
+    for (Connector other in attached) {
+      json.add(
+        {
+          "from" : parent.id,
+          "to" : other.parent.id,
+          "type": getJointType(this, other)
+        }
+      );
+    }
+    return json;
   }
 
 
+  bool isRightJoint() {
+    return (parent.rightJoint == this);
+  }
+
+  bool isLeftJoint() {
+    return (parent.leftJoint == this);
+  }
+
   bool isConnected() {
-    return components.isNotEmpty;
+    return attached.isNotEmpty;
   }
 
 
   bool isConnectedTo(Component c) {
-    return components.contains(c);
+    return (attached.contains(c.leftJoint) || attached.contains(c.rightJoint));
   }
 
 
@@ -42,14 +64,31 @@ class Connector {
 
   bool connect(Connector other) {
     if (other.parent != parent && overlaps(other) && !isConnectedTo(other.parent)) {
-      components.add(other.parent);
-      other.components.add(parent);
+      attached.add(other);
+      other.attached.add(this);
       return true;
     } else {
       return false;
     }
   }
 
+  int getJointType(Connector a, Connector b) {
+    if (!a.attached.contains(b)){
+      return 0;
+    }
+    if (a.isLeftJoint() && b.isLeftJoint()){
+      return 1;
+    }
+    else if (a.isRightJoint() && b.isRightJoint()){
+      return 2;
+    }
+    else if (a.isLeftJoint() && b.isRightJoint()){
+      return 3;
+    }
+    else {
+      return 4;
+    }
+  }
   
   void draw(CanvasRenderingContext2D ctx) {
     ctx.fillStyle = isConnected() ? "rgba(0, 255, 0, 0.5)" : "rgba(255, 0, 0, 0.5)";

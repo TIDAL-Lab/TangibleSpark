@@ -115,7 +115,21 @@ class Component {
     return false;
   }
 
-
+  Map toJSON() {
+    Map json = new Map();
+    json["id"] = this.id;
+    json["type"] = this.name;
+    json["leftJoint"] = {
+      "x" : this.leftJoint.x,
+      "y" : this.leftJoint.y
+    };
+    json["rightJoint"] = {
+      "x" : this.rightJoint.x,
+      "y" : this.rightJoint.y
+    };
+    return json;
+  }
+  
   void _initLocation(TopCode found, TopCode match, TopCode opposite) {
 
     // copy pose from the found topcode -- smoothing to prevent jitters

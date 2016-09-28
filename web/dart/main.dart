@@ -3,7 +3,7 @@
  */
 
  // About to commit false changes
- 
+
 library TangibleSpark;
 
 import 'dart:html';
@@ -118,7 +118,24 @@ class Spark {
     for (Component c in components) {
       if (c.visible) c.draw(ctx);
     }
+
+    exportJSON();
   }
+
+    void exportJSON(){
+    List componentJSON = new List();
+    List connectorJSON = new List();
+
+    for (Component c in components){
+      if (c.visible) {
+        componentJSON.add(c.toJSON());
+        connectorJSON.addAll(c.leftJoint.toJSON());
+        connectorJSON.addAll(c.rightJoint.toJSON());
+      }
+    }
+    //print(JSON.encode(componentJSON));
+  }
+  
 }
   
   
