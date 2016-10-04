@@ -65,3 +65,11 @@ button {
 #camera-button:active { color: rgba(255, 255, 255, 0.5); }
 
 
+#analyzer-button {
+  position: absolute;
+  font-size: 30px;
+  top: 25px;
+  left: 225px;
+  color: white;
+}
+#analyzer-button:active { color: rgba(255, 255, 255, 0.5); }

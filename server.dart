@@ -42,7 +42,7 @@ void main() {
   int port = 8086;
   String addr = 'localhost';
 
-  var pathToBuild = join(dirname(Platform.script.toFilePath()), "web");
+  var pathToBuild = join(dirname(Platform.script.toFilePath()), ".");
 
   var staticFiles = new VirtualDirectory(pathToBuild);
   staticFiles.allowDirectoryListing = true;

@@ -17,16 +17,25 @@ part 'scanner.dart';
 part 'topcode.dart';
 part 'utils.dart';
 
+part 'circuitAnalyzer/Circuit.dart';
+part 'circuitAnalyzer/Matrix.dart';
+part 'circuitAnalyzer/LUDecomposition.dart';
+part 'circuitAnalyzer/QRDecomposition.dart';
+part 'circuitAnalyzer/KVLSolver.dart';
+
 
 // IMPORTANT! This has to match js/video.js
 const VIDEO_WIDTH = 1280; //1920; // 1280; // 800
 const VIDEO_HEIGHT = 720; // 1080; // 720; // 600
 
-
 Spark spark;
 
 void main() {
   spark = new Spark();
+
+  /* added a button to run the circuit.solve() code everytime that is clicked */
+  ButtonElement button = document.querySelector("#analyzer-button");
+  if (button != null) button.onClick.listen((evt) => spark.circuit.solve());
 }
 
 
@@ -46,6 +55,9 @@ class Spark {
   List<Component> components = new List<Component>();
   List<Connector> connectors = new List<Connector>();
 
+  Circuit circuit = new Circuit();
+
+
   
   Spark() {
     CanvasElement canvas = querySelector("#video-canvas");
@@ -54,7 +66,7 @@ class Spark {
     video = querySelector("#video-stream");
     video.autoplay = true;
     video.onPlay.listen((e) {
-      timer = new Timer.periodic(const Duration(milliseconds : 30), refreshCanvas);
+      timer = new Timer.periodic(const Duration(milliseconds : 10), refreshCanvas);
     });
 
     // initialize our components
@@ -119,10 +131,10 @@ class Spark {
       if (c.visible) c.draw(ctx);
     }
 
-    exportJSON();
+    //exportJSON();
   }
 
-    void exportJSON(){
+  void exportJSON(){
     List componentJSON = new List();
     List connectorJSON = new List();
 
@@ -137,5 +149,4 @@ class Spark {
   }
   
 }
-  
   
