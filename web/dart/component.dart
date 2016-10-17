@@ -15,28 +15,37 @@ class Component {
   /** Unique component ID */
   String id = "";
 
-  /** Name of the statement (e.g. resistor) */
-  String name = 'resistor';
+  /** Type of the component (e.g. resistor) */
+  String type = 'Resistor';
 
   /** Left TopCode for this component */
   TopCode leftCode = new TopCode();
   TopCode rightCode = new TopCode();
 
   /** Connectors for this component */
-  Connector leftJoint;
-  Connector rightJoint;
+  Connector leftJoint; //"start" in virtual code
+  Connector rightJoint; //"end" in virtual code
 
   /** Is this component visible to the camera? */
   bool visible = false;
 
+  /** direction determines the direction of current flow, 0, -1, or 1 */
+  num direction = 0;
+
+  double resistance;
+  double current = 0.0;
+  double voltageDrop;
+
 
   Component(Map definition) {
     id = definition['id'];
-    name = definition['name'];
+    type = definition['type'];
     leftCode.code = definition['left-code'];
     rightCode.code = definition['right-code'];
+    resistance = definition['resistance'];
+    voltageDrop = definition['voltageDrop'];
     leftJoint = new Connector(this);
-    rightJoint = new Connector(this);
+    rightJoint = new Connector(this); 
   }
 
 
@@ -118,7 +127,7 @@ class Component {
   Map toJSON() {
     Map json = new Map();
     json["id"] = this.id;
-    json["type"] = this.name;
+    json["type"] = this.type;
     json["leftJoint"] = {
       "x" : this.leftJoint.x,
       "y" : this.leftJoint.y

@@ -79,8 +79,8 @@ class KirchhoffSolver {
     for (int i=0; i<circuit.loops.length; i++) {
       bool burntFlag = false;
       for (Edge e in circuit.loops[i].path) {
-        if (e.component is Battery) {
-          if ((e.component as Battery).isBurnt) {burntFlag = true;}
+        if (e.component.type == "Battery") {
+          //if ((e.component as Battery).isBurnt) {burntFlag = true;}
           es.equations[i].rhs += e.component.voltageDrop * e.direction * -1;
         }
         else {

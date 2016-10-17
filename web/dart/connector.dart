@@ -16,7 +16,8 @@ class Connector {
 
   List<Connector> attached = new List<Connector>();
 
-   
+  /* node associates the corresponding node in the circuit/graph analysis */ 
+  Node node = null;  
   Connector(this.parent);
 
 

@@ -12,10 +12,11 @@ class Circuit {
 /* ------------------------
   Class variables
  * ------------------------ */
-  
+  List<Component> components;
+  List<Connector> connectors;
+
   List<Edge> edges;
   List<Node> nodes;
-  //List<ConnectedGraph> graphs;
   List<Loop> loops;
   num numCG = 0;
   num time;
@@ -23,16 +24,74 @@ class Circuit {
   //List<Battery> burntBatteries;
   //num maxCurrent = 20;
 
-  //List<List<Component>> connectedComponents = new List<List<Component>>(); // this list is for sending the connection information to the webgl code
+
 
 /* ------------------------
   Constructor
  * ------------------------ */
 
   Circuit() {
+    // components = new List<Component>();
+    // connectors = new List<Connector>();
+
+    // nodes = new List<Node>();
+    // edges = new List<Edge>();
+    
+  }
+
+/* ------------------------
+  Initiating the Circuit 
+ * ------------------------ */
+  void init() {
+    components = new List<Component>();
+    connectors = new List<Connector>();
+
     nodes = new List<Node>();
     edges = new List<Edge>();
-    
+
+    spark.exportJSON();
+    findCircuitComponents();
+    makeCircuitConnections();
+    print("solving the circuit");
+    print(nodes.length);
+    solve();
+    sendData();
+  }
+
+  void findCircuitComponents(){
+    for (Component c in spark.components){
+      if (c.visible) {
+        this.addNewComponent(c);
+        this.connectors.add(c.leftJoint);
+        this.connectors.add(c.rightJoint);
+      }
+    }
+    // print(components.length);
+  }
+
+  void makeCircuitConnections(){
+    for (Connector cp in this.connectors) {
+      print(cp.isConnected());
+      if (cp.isConnected()) {
+        print("cp is connected:" + cp.parent.id);
+        if (!cp.node.isCollapsed()) {
+          collapseNode(cp, cp.attached[0]);
+        }
+      }
+    }
+    //     for (Component c in this.components) {
+    //   for (Connector cp in c.leftJoint.attached) {
+    //     collapseNode(c.leftJoint, cp);
+    //   }
+    //   for (Connector cp in c.rightJoint.attached) {
+    //     collapseNode(c.rightJoint, cp);
+    //   }
+    // }
+  }
+
+  void addNewComponent( Component c) {
+    this.components.add(c);
+    addNewBranch(c);
   }
   
 /* ------------------------
@@ -41,8 +100,6 @@ class Circuit {
   /** solve the circuit, update the components' variables and send the JSON data to the server
    */  
   void solve() {
-    spark.exportJSON();
-    print("solving the circuit haha");
     resetGraph();
     findSpanningForest();
     var backEdges = edges.where((e) => e.label == 'back'); //note: backEdges is a "lazy" iterable
@@ -57,9 +114,7 @@ class Circuit {
       loops[i].current = solution.get(i,0);
     }
     
-    updateComponents();
-    // sendData();
-    
+    updateComponents();    
   }
 
 
@@ -96,16 +151,16 @@ class Circuit {
       //else if ( c.current < 0 ) { c.direction = -1; } // flow of electrons from end to start
       //else { c.direction = 0; }
       
-      if (!(c is Battery))
+      if (c.type != "Battery")
        { c.voltageDrop = c.resistance * c.current; }
-      if (c is Bulb) {
-        if (c.current != 0.0 && !(c as Bulb).isOn) (c as Bulb).turnOn();
-        if (c.current == 0.0 && (c as Bulb).isOn) (c as Bulb).turnOff();
-      }
-      if (c is Battery && c.current > maxCurrent) { // a short circuit
-        (c as Battery).burn(); 
-        burntBatteries.add(c as Battery);        
-      }
+      // if (c.type == "Bulb") {
+      //   if (c.current != 0.0 && !(c as Bulb).isOn) (c as Bulb).turnOn();
+      //   if (c.current == 0.0 && (c as Bulb).isOn) (c as Bulb).turnOff();
+      // }
+      // if (c is Battery && c.current > maxCurrent) { // a short circuit
+      //   (c as Battery).burn(); 
+      //   burntBatteries.add(c as Battery);        
+      // }
     }
   }
   
@@ -138,32 +193,20 @@ class Circuit {
       var offsetX = 0;
       var offsetY = 0;
       var scaleFactor = 1.0;
-      if ( SHOW_MARKER ) {  // AR condition
-        offsetX = theApp.marker.x ;
-        offsetY = theApp.marker.y;
-      }
-      else {   // non-AR condition
-        offsetX = theApp.workingBoxWidth/2;
-        offsetY = theApp.workingBoxHeight/2;
-      }
+
       
-      var compObj = {'type': c.type,
-                                          'voltageDrop': c.voltageDrop,
-                                          'current': c.current,
-                                          'resistance': c.resistance,
-                                          //'startX': (c.start.x -theApp.workingBoxWidth/2),
-                                          //'startY':(theApp.workingBoxHeight/2 - c.start.y),
-                                          //'endX': (c.end.x - theApp.workingBoxWidth/2),
-                                          //'endY': (theApp.workingBoxHeight/2 - c.end.y),
-                                          'startX': scaleFactor*(c.start.x -offsetX),
-                                          'startY':scaleFactor*(offsetY - c.start.y),
-                                          'endX': scaleFactor*(c.end.x - offsetX),
-                                          'endY': scaleFactor*(offsetY - c.end.y),
-                                          'direction': c.direction,
-                                          'innerWall':1,
-                                          'connection': rowArray,
-                                          'graphLabel': e.nodes[0].graphLabel
-                                          };
+      var compObj = {   'type': c.type,
+                        'voltageDrop': c.voltageDrop,
+                        'current': c.current,
+                        'resistance': c.resistance,
+                        'startX': scaleFactor*(c.leftJoint.x -offsetX),
+                        'startY':scaleFactor*(offsetY - c.leftJoint.y),
+                        'endX': scaleFactor*(c.rightJoint.x - offsetX),
+                        'endY': scaleFactor*(offsetY - c.rightJoint.y),
+                        'direction': c.direction,
+                        'connection': rowArray,
+                        'graphLabel': e.nodes[0].graphLabel
+                        };
       
         myObj.add(compObj);
 
@@ -176,46 +219,15 @@ class Circuit {
     myObj = new JsObject.jsify(myObj);
     
     
-    if (USE_SERVER) {  // send data to parse
-      print("send data");
-      //print(JSON.encode(myObj));
-      // call the "doDeleteParse method on myObj (the code is in sendData.js)
-      var sendParse = new JsObject(context['sendParse'],[myObj]); // instantiate a JS "deleteParse" object
-      sendParse.callMethod('doUpdateParse'); // call its method "doUpdateParse"
-      //sendParse.callMethod('doUpdateParse');
-      
-    }
-    else if (theApp.condition != 1){ 
-      theApp.webglComponent = null;
-      if (theApp.model != null) theApp.help.show();
-      var data = new JsObject(context['sendData'],[myObj]); // instantiate a JS "data" object
-      data.callMethod('doSendData'); // call its method "doSendData"
-//      new Future.delayed(const Duration(milliseconds:100), () {
-//        data.callMethod('doSendData');
-//      });
-
-    }
+    // send data to parse
+    print("send data");
+    //print(JSON.encode(myObj));
+    // call the "doDeleteParse method on myObj (the code is in sendData.js)
+    var sendParse = new JsObject(context['sendParse'],[myObj]); // instantiate a JS "deleteParse" object
+    sendParse.callMethod('doUpdateParse'); // call its method "doUpdateParse"
+    //sendParse.callMethod('doUpdateParse');
   }
   
-  /** find the connected components in the graph, create the data to be sent to Parse
-   * 
-   */
-  /*
-  void findConnectedComponents () {
-    connectedComponents = new List<List<Component>>();
-    print('number of connected graphs:');
-    print(this.numCG);
-    for (int i=0; i < this.numCG; i++) {
-      connectedComponents.add([]);    // add empty arrays as many as the number of connected graphs    
-    } 
-    var index;
-    for (Edge e in edges) {
-      index = e.nodes[0].graphLabel;
-      connectedComponents[index].add(e.component);      
-    }
-    print(connectedComponents);
-  }
-  */
   /** called to create the array of codes for the component connections status
   @param c    component
   @return     List<int>: -1 -> diagonal (cj is c)
@@ -228,27 +240,27 @@ class Circuit {
   
   List<int> createConnectionArray( Component c ) {
     
-    var array = new List(theApp.components.length); // creates an array of 0 with a fixed length of # of components
-    int index = theApp.components.indexOf(c);
+    var array = new List(this.components.length); // creates an array of 0 with a fixed length of # of components
+    int index = this.components.indexOf(c);
     array[index] = -1;
-    List<ControlPoint> sList = c.start.connections;
-    for (ControlPoint cp in sList) {
-      var c2 = cp.myComponent;
-      if (c2.start == cp) {
-        array[theApp.components.indexOf(c2)] = 1;
+    List<Connector> sList = c.leftJoint.attached;
+    for (Connector cp in sList) {
+      var c2 = cp.parent;
+      if (c2.leftJoint == cp) {
+        array[this.components.indexOf(c2)] = 1;
       }
       else {
-        array[theApp.components.indexOf(c2)] = 3;
+        array[this.components.indexOf(c2)] = 3;
       }
     }
-    List<ControlPoint> eList = c.end.connections;
-    for (ControlPoint cp in eList) {
-      var c2 = cp.myComponent;
-      if (c2.end == cp) {
-        array[theApp.components.indexOf(c2)] = 2;
+    List<Connector> eList = c.rightJoint.attached;
+    for (Connector cp in eList) {
+      var c2 = cp.parent;
+      if (c2.rightJoint == cp) {
+        array[this.components.indexOf(c2)] = 2;
       }
       else {
-        array[theApp.components.indexOf(c2)] = 4;
+        array[this.components.indexOf(c2)] = 4;
       }
     }
     return array;
@@ -264,9 +276,9 @@ class Circuit {
   
   void addNewBranch (Component c) {
     Node n1 = new Node();
-    c.start.node = n1;
+    c.leftJoint.node = n1;
     Node n2 = new Node();
-    c.end.node = n2;
+    c.rightJoint.node = n2;
     Edge e = new Edge(n1, n2);
     e.component = c;
     
@@ -276,36 +288,8 @@ class Circuit {
     
     n1.adjacents.add(n2);
     n2.adjacents.add(n1);
-    findSpanningForest();
-    sendData();    
+    findSpanningForest();    
   }
-  
-  /*int returnDirection(double x0,double x1,double y0,double y1){
-      var n = 0;
-      var grad = 0;
-      var deltaY = y1-y0;
-      var deltaX = x1-x0;
-      if (deltaX == 0){
-        n = 1;
-      }else{
-        grad = deltaY/deltaX;
-      }
-      if ( grad.abs() < 1){
-        if (grad < 0){
-          n = 3;
-        }else{
-          n = 2;
-        }
-      }else if(grad.abs() > 1){
-        if (grad < 0){
-          n = 0;
-        }else{
-          n = 1;
-        }
-      }
-      
-      return n;
-    }*/
   
   /** remove a branch. For now, a branch can be removed only when it is disconnected.
   @param b    branch to be removed
@@ -313,8 +297,8 @@ class Circuit {
   */
 
   void removeBranch (Component c) {
-    Node n1 = c.start.node;
-    Node n2 = c.end.node;
+    Node n1 = c.leftJoint.node;
+    Node n2 = c.rightJoint.node;
     Edge e = getEdge(n1, n2); 
     this.nodes.remove(n1);
     this.nodes.remove(n2);
@@ -330,16 +314,17 @@ class Circuit {
   @return     void
   */
   
-  void collapseNode( ControlPoint dragged, ControlPoint other ) {
+  void collapseNode( Connector dragged, Connector other ) {
     Node old1 = dragged.node;
     Node old2 = other.node;
     Node newNode = new Node();
     newNode.adjacents.addAll(old1.adjacents);
     newNode.adjacents.addAll(old2.adjacents);
+    //newNode.isCollapsed = true;
    
     
     dragged.node = newNode;
-    for (ControlPoint cp in dragged.connections) {
+    for (Connector cp in dragged.attached) {
       cp.node = newNode;
     }
     
@@ -363,22 +348,22 @@ class Circuit {
     nodes.remove(old2);
     nodes.add(newNode);
     
-    burntBatteries = new List<Battery>();
-    this.solve();
+    //burntBatteries = new List<Battery>();
+    //this.solve();
     /* remove the burnt batteries from the graph */
 //    for (Battery bb in burntBatteries) {
-//      Node n1 = bb.start.node;
-//      Node n2 = bb.end.node;
+//      Node n1 = bb.leftJoint.node;
+//      Node n2 = bb.rightJoint.node;
 //      Edge e = getEdge(n1, n2); 
 //      this.edges.remove(e);
 //      n1.adjacents.remove(n2);
 //      n2.adjacents.remove(n1);     
 //    }
-    if (!burntBatteries.isEmpty) {
-      this.solve();
-    }
+    // if (!burntBatteries.isEmpty) {
+    //   this.solve();
+    // }
     
-    Sounds.playSound("ping");
+    //Sounds.playSound("ping");
 
   }
   
@@ -387,7 +372,7 @@ class Circuit {
   @return     void
   */
   
-  void splitNode (ControlPoint dragged, ControlPoint other) {
+  void splitNode (Connector dragged, Connector other) {
     Node newNode = new Node();
     dragged.node = newNode;
     other.node.adjacents.remove(dragged.myConjoint.node);
@@ -483,39 +468,6 @@ class Circuit {
     return l;
   }
   
-  /** Prim's algorithm for finding a spanning tree of a connected graph
-  @param  list of nodes
-  @return list of connected graphs
-  */
-  /*
-  void findSpanningTree (ConnectedGraph graph) {
-    for (Node n in graph.nodes) {
-      n.visited = false;
-      n.parent = null;
-      n.finished = false;
-    }
-    
-    //List<Node> queue = graph.nodes;
-    Node u = graph.nodes.first; // u is the root in Prim's algorithm
-    u.visited = true;
-    
-    while (!graph.nodes.every((n) => n.isFinished)) {
-      u = graph.nodes.firstWhere((n) => n.isVisited && !n.isFinished);
-      for (Node v in u.adjacents) {
-        if (v.visited == false && v.finished == false) {
-          getEdge(graph.edges, u, v).label = 'tree'; // mark edge as a tree edge
-          v.parent = u;
-          v.visited = true;  
-        }
-        else if (v.visited == true && v.finished == false) {
-          getEdge(graph.edges, u, v).label = 'back'; // mark edge as a back edge        
-        }
-      }
-      u.finished = true;
-    }
-  }
-  */
-  
   void printGraph() {
     var obj = [];
     var s;
@@ -532,9 +484,7 @@ class Circuit {
         };
     obj.add(s);
   }
-    //for (int i=0; i < loops.length; i++) {
-      
-      //for (Edge e in loops[i].path) {
+
     for (Edge e in edges){
         s = {
              //'loop': i,
@@ -590,6 +540,7 @@ class Node{
   num discoverTime;
   Node parent;
   List<Node> adjacents;
+  //bool isCollapsed = false;
 
   Node() {
     adjacents = new List<Node>();
@@ -598,4 +549,9 @@ class Node{
   }
   
   bool get isVisited => visited;
+
+  /* new function for tangible code */
+  bool isCollapsed() {
+    return adjacents.length > 1; // each node always have 1 adjacent from its parent. If more than that then it's connected
+  }
 }

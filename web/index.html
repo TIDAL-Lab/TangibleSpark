@@ -10,6 +10,11 @@
 </head>
 
 <body>
+  <script src="https://cdn.pubnub.com/pubnub-3.15.2.js"></script>     
+<!--   <script src="js/dart.js"></script> -->
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.19.min.js"></script>
+  <script src="js/underscore.js"></script>
+
   <div class="content">
       
     <video id="video-stream"></video>
@@ -18,6 +23,7 @@
     <button id="analyzer-button"><span class="fa fa-smile-o"></span></button>
   </div>
 
+  <script src="sendData.js"></script>
   <script type="application/dart" src="dart/main.dart"></script>
   <script src="js/dart.js"></script>
   <script src="js/adapter-0.2.9.js"></script>
@@ -26,53 +32,67 @@
   <script id="components-definition" type="application/json" src="json/components.json">
 [
   {
-    "name" : "resistor",
+    "type" : "Resistor",
     "id" : "r0",
     "left-code" : 313,
-    "right-code" : 361
+    "right-code" : 361,
+    "resistance" : 1.0,
+    "voltageDrop" : 0.0
   },
 
   {
-    "name" : "wire",
+    "type" : "Wire",
     "id" : "w0",
     "left-code" : 279,
-    "right-code" : 157
+    "right-code" : 157,
+    "resistance" : 0.01,
+    "voltageDrop" : 0.0
   },
 
   {
-    "name" : "wire",
+    "type" : "Wire",
     "id" : "w1",
     "left-code" : 203,
-    "right-code" : 271
+    "right-code" : 271,
+    "resistance" : 0.01,
+    "voltageDrop" : 0.0
   },
 
   {
-    "name" : "wire",
+    "type" : "Wire",
     "id" : "w2",
     "left-code" : 31,
-    "right-code" : 103
+    "right-code" : 103,
+    "resistance" : 0.01,
+    "voltageDrop" : 0.0
   },
 
 
   {
-    "name" : "wire",
+    "type" : "Wire",
     "id" : "w3",
     "left-code" : 327,
-    "right-code" : 205
+    "right-code" : 205,
+    "resistance" : 0.01,
+    "voltageDrop" : 0.0
   },
 
   {
-    "name" : "battery",
+    "type" : "Battery",
     "id" : "b0",
     "left-code" : 155,
-    "right-code" : 93
+    "right-code" : 93,
+    "resistance" : 0.0,
+    "voltageDrop" : 2.0
   },
 
   {
-    "name" : "light bulb",
+    "type" : "Bulb",
     "id" : "l0",
     "left-code" : 47,
-    "right-code" : 107
+    "right-code" : 107,
+    "resistance" : 3.0,
+    "voltageDrop" : 0.0
   }
 ]
   </script>

@@ -10,6 +10,7 @@ import 'dart:html';
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:js';
 
 part 'component.dart';
 part 'connector.dart';
@@ -35,7 +36,7 @@ void main() {
 
   /* added a button to run the circuit.solve() code everytime that is clicked */
   ButtonElement button = document.querySelector("#analyzer-button");
-  if (button != null) button.onClick.listen((evt) => spark.circuit.solve());
+  if (button != null) button.onClick.listen((evt) => spark.circuit.init());
 }
 
 
@@ -60,13 +61,16 @@ class Spark {
 
   
   Spark() {
+    /* init pubnub for sending data to parse */
+    context.callMethod('initPubnub', []);
+
     CanvasElement canvas = querySelector("#video-canvas");
     ctx = canvas.getContext("2d");
     scanner = new Scanner();
     video = querySelector("#video-stream");
     video.autoplay = true;
     video.onPlay.listen((e) {
-      timer = new Timer.periodic(const Duration(milliseconds : 10), refreshCanvas);
+      timer = new Timer.periodic(const Duration(milliseconds : 240), refreshCanvas);
     });
 
     // initialize our components
@@ -146,6 +150,7 @@ class Spark {
       }
     }
     print(JSON.encode(componentJSON));
+    print(JSON.encode(connectorJSON));
   }
   
 }
