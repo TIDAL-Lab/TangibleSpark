@@ -70,7 +70,7 @@ class Spark {
     video = querySelector("#video-stream");
     video.autoplay = true;
     video.onPlay.listen((e) {
-      timer = new Timer.periodic(const Duration(milliseconds : 240), refreshCanvas);
+      timer = new Timer.periodic(const Duration(milliseconds : 60), refreshCanvas);
     });
 
     // initialize our components

@@ -151,8 +151,8 @@ class Component {
 
     // the position is pretty jittery, but we can't assume that it will 
     // stay as fixed as the unit
-    match.x = match.x * 0.8 + found.x * 0.2;
-    match.y = match.y * 0.8 + found.y * 0.2;
+    match.x = match.x * 0.5 + found.x * 0.5;
+    match.y = match.y * 0.5 + found.y * 0.5;
 
     // we've found at least one topcode, so this component is visible
     visible = true; 

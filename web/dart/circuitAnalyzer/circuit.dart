@@ -49,8 +49,15 @@ class Circuit {
     nodes = new List<Node>();
     edges = new List<Edge>();
 
-    spark.exportJSON();
+    //spark.exportJSON();
     findCircuitComponents();
+    for (Connector cp in this.connectors) {
+      print(cp.parent.id);
+      print(cp.node.adjacents.length);
+      print(cp.node.isCollapsed());
+      print(cp.attached.length);
+    }
+    print(nodes.length);
     makeCircuitConnections();
     print("solving the circuit");
     print(nodes.length);
@@ -66,27 +73,24 @@ class Circuit {
         this.connectors.add(c.rightJoint);
       }
     }
-    // print(components.length);
+    //print(components.length);
   }
 
   void makeCircuitConnections(){
     for (Connector cp in this.connectors) {
-      print(cp.isConnected());
+      print("component:" + cp.parent.id);
       if (cp.isConnected()) {
-        print("cp is connected:" + cp.parent.id);
+        print("cp is connected");
+        print(cp.node.adjacents.length);
         if (!cp.node.isCollapsed()) {
+          print("cp is not collapsed");
+          // for (Connector cp2 in cp.attached) {
+          //   collapseNode(cp, cp2);
+          // }
           collapseNode(cp, cp.attached[0]);
         }
       }
     }
-    //     for (Component c in this.components) {
-    //   for (Connector cp in c.leftJoint.attached) {
-    //     collapseNode(c.leftJoint, cp);
-    //   }
-    //   for (Connector cp in c.rightJoint.attached) {
-    //     collapseNode(c.rightJoint, cp);
-    //   }
-    // }
   }
 
   void addNewComponent( Component c) {
@@ -324,9 +328,10 @@ class Circuit {
    
     
     dragged.node = newNode;
-    for (Connector cp in dragged.attached) {
-      cp.node = newNode;
-    }
+    other.node = newNode;
+    // for (Connector cp in dragged.attached) {
+    //   cp.node = newNode;
+    // }
     
     for (Node n in old1.adjacents) {
       Edge e = getEdge(old1, n);

@@ -18,6 +18,7 @@ class Connector {
 
   /* node associates the corresponding node in the circuit/graph analysis */ 
   Node node = null;  
+  bool adjustedPos = false;
   Connector(this.parent);
 
 
