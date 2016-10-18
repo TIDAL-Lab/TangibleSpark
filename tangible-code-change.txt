@@ -40,7 +40,9 @@ NOTE: I need to figure out coordinations for this new code.
 	--> I added the underscore.js library! It seemed to solve the issue.
 	
 *** notes on 10/17/2016
-1. trying to fix the issue with end points of connected connectors not overlapping:
+1. fixed the code to include connections with more than two connectors
+
+2. fixed the issue with end points of connected connectors not overlapping:
 	--> this causes issue in the electron model code, as it should represent all the connected connectors as one single node,
 		otherwise it does not work correctly.
 	

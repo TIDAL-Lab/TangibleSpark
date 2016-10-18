@@ -73,22 +73,16 @@ class Circuit {
         this.connectors.add(c.rightJoint);
       }
     }
-    //print(components.length);
   }
 
   void makeCircuitConnections(){
     for (Connector cp in this.connectors) {
       print("component:" + cp.parent.id);
       if (cp.isConnected()) {
-        print("cp is connected");
-        print(cp.node.adjacents.length);
         if (!cp.node.isCollapsed()) {
-          print("cp is not collapsed");
-          // for (Connector cp2 in cp.attached) {
-          //   collapseNode(cp, cp2);
-          // }
           collapseNode(cp, cp.attached[0]);
         }
+        if (!cp.adjustedPos) adjustPosition(cp);
       }
     }
   }
@@ -96,6 +90,31 @@ class Circuit {
   void addNewComponent( Component c) {
     this.components.add(c);
     addNewBranch(c);
+  }
+
+  void adjustPosition(Connector cp) {
+   // List<num> xcor = new List<num>();
+   // List<num> ycor = new List<num>();
+   // xcor.add(cp.x);
+   // ycor.add(cp.y);
+   num xcor = cp.x;
+   num ycor = cp.y;
+   for (Connector cp2 in cp.attached) {
+    xcor += cp2.x;
+    ycor += cp2.y;
+   }
+   xcor /= cp.attached.length + 1;
+   ycor /= cp.attached.length + 1;
+   cp.x = xcor;
+   cp.y =ycor;
+   cp.adjustedPos = true;
+  for (Connector cp2 in cp.attached) {
+    cp2.x = xcor;
+    cp2.y = ycor;
+    cp2.adjustedPos = true;
+   }
+   
+   //print(cp.x);
   }
   
 /* ------------------------
