@@ -30,71 +30,308 @@
   <script src="js/video.js"></script>
 
   <script id="components-definition" type="application/json" src="json/components.json">
+// [
+//   {
+//     "type" : "Resistor",
+//     "id" : "r0",
+//     "left-code" : 313,
+//     "right-code" : 361,
+//     "resistance" : 1.0,
+//     "voltageDrop" : 0.0
+//   },
+
+//   {
+//     "type" : "Wire",
+//     "id" : "w0",
+//     "left-code" : 279,
+//     "right-code" : 157,
+//     "resistance" : 0.01,
+//     "voltageDrop" : 0.0
+//   },
+
+//   {
+//     "type" : "Wire",
+//     "id" : "w1",
+//     "left-code" : 203,
+//     "right-code" : 271,
+//     "resistance" : 0.01,
+//     "voltageDrop" : 0.0
+//   },
+
+//   {
+//     "type" : "Wire",
+//     "id" : "w2",
+//     "left-code" : 31,
+//     "right-code" : 103,
+//     "resistance" : 0.01,
+//     "voltageDrop" : 0.0
+//   },
+
+
+//   {
+//     "type" : "Wire",
+//     "id" : "w3",
+//     "left-code" : 327,
+//     "right-code" : 205,
+//     "resistance" : 0.01,
+//     "voltageDrop" : 0.0
+//   },
+
+//   {
+//     "type" : "Battery",
+//     "id" : "b0",
+//     "left-code" : 155,
+//     "right-code" : 93,
+//     "resistance" : 0.0,
+//     "voltageDrop" : 2.0
+//   },
+
+//   {
+//     "type" : "Bulb",
+//     "id" : "l0",
+//     "left-code" : 47,
+//     "right-code" : 107,
+//     "resistance" : 3.0,
+//     "voltageDrop" : 0.0
+//   },
+
+//   {
+//     "type" : "Bulb",
+//     "id" : "l1",
+//     "left-code" : 87,
+//     "right-code" : 91,
+//     "resistance" : 3.0,
+//     "voltageDrop" : 0.0
+//   }
+// ]
 [
   {
-    "type" : "Resistor",
-    "id" : "r0",
-    "left-code" : 313,
-    "right-code" : 361,
-    "resistance" : 1.0,
-    "voltageDrop" : 0.0
-  },
+      "type" : "Resistor",
+      "id" : "r0",
+      "left-code" : 313,
+      "right-code" : 361,
+      "resistance" : 1.0,
+      "voltageDrop" : 0.0
+    },
 
-  {
-    "type" : "Wire",
-    "id" : "w0",
-    "left-code" : 279,
-    "right-code" : 157,
-    "resistance" : 0.01,
-    "voltageDrop" : 0.0
-  },
+    {
+      "type" : "Resistor",
+      "id" : "r1",
+      "left-code" : 55,
+      "right-code" : 171,
+      "resistance" : 1.0,
+      "voltageDrop" : 0.0
+    },
 
-  {
-    "type" : "Wire",
-    "id" : "w1",
-    "left-code" : 203,
-    "right-code" : 271,
-    "resistance" : 0.01,
-    "voltageDrop" : 0.0
-  },
+    {
+      "type" : "Resistor",
+      "id" : "r2",
+      "left-code" : 307,
+      "right-code" : 309,
+      "resistance" : 2.0,
+      "voltageDrop" : 0.0
+    },
 
-  {
-    "type" : "Wire",
-    "id" : "w2",
-    "left-code" : 31,
-    "right-code" : 103,
-    "resistance" : 0.01,
-    "voltageDrop" : 0.0
-  },
+    {
+      "type" : "Resistor",
+      "id" : "r3",
+      "left-code" : 331,
+      "right-code" : 333,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Resistor",
+      "id" : "r4",
+      "left-code" : 339,
+      "right-code" : 341,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w0",
+      "left-code" : 279,
+      "right-code" : 157,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w1",
+      "left-code" : 203,
+      "right-code" : 271,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w2",
+      "left-code" : 31,
+      "right-code" : 103,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
 
 
-  {
-    "type" : "Wire",
-    "id" : "w3",
-    "left-code" : 327,
-    "right-code" : 205,
-    "resistance" : 0.01,
-    "voltageDrop" : 0.0
-  },
+    {
+      "type" : "Wire",
+      "id" : "w3",
+      "left-code" : 327,
+      "right-code" : 205,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
 
-  {
-    "type" : "Battery",
-    "id" : "b0",
-    "left-code" : 155,
-    "right-code" : 93,
-    "resistance" : 0.0,
-    "voltageDrop" : 2.0
-  },
+    {
+      "type" : "Wire",
+      "id" : "w4",
+      "left-code" : 233,
+      "right-code" : 241,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
 
-  {
-    "type" : "Bulb",
-    "id" : "l0",
-    "left-code" : 47,
-    "right-code" : 107,
-    "resistance" : 3.0,
-    "voltageDrop" : 0.0
-  }
-]
+    {
+      "type" : "Wire",
+      "id" : "w5",
+      "left-code" : 295,
+      "right-code" : 299,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+
+    {
+      "type" : "Wire",
+      "id" : "w6",
+      "left-code" : 179,
+      "right-code" : 181,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w7",
+      "left-code" : 185,
+      "right-code" : 199,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w8",
+      "left-code" : 211,
+      "right-code" : 213,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w9",
+      "left-code" : 217,
+      "right-code" : 227,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w10",
+      "left-code" : 229,
+      "right-code" : 283,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Wire",
+      "id" : "w11",
+      "left-code" : 285,
+      "right-code" : 301,
+      "resistance" : 0.01,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Battery",
+      "id" : "b0",
+      "left-code" : 155,
+      "right-code" : 93,
+      "resistance" : 0.0,
+      "voltageDrop" : 2.0
+    },
+
+    {
+      "type" : "Battery",
+      "id" : "b1",
+      "left-code" : 61,
+      "right-code" : 79,
+      "resistance" : 0.0,
+      "voltageDrop" : 2.0
+    },
+
+    {
+      "type" : "Battery",
+      "id" : "b2",
+      "left-code" : 117,
+      "right-code" : 173,
+      "resistance" : 0.0,
+      "voltageDrop" : 2.0
+    },
+
+    {
+      "type" : "Bulb",
+      "id" : "l0",
+      "left-code" : 47,
+      "right-code" : 107,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Bulb",
+      "id" : "l1",
+      "left-code" : 87,
+      "right-code" : 91,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Bulb",
+      "id" : "l2",
+      "left-code" : 121,
+      "right-code" : 143,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Bulb",
+      "id" : "l3",
+      "left-code" : 151,
+      "right-code" : 59,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    },
+
+    {
+      "type" : "Bulb",
+      "id" : "l4",
+      "left-code" : 109,
+      "right-code" : 115,
+      "resistance" : 3.0,
+      "voltageDrop" : 0.0
+    }
+  ]
   </script>
 </body>
 </html>

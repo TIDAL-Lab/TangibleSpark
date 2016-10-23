@@ -95,13 +95,13 @@ class Component {
 
     // set connector positions
     {
-      leftJoint.x = leftCode.targetX(-1.5, 0);
-      leftJoint.y = leftCode.targetY(-1.5, 0);
-      leftJoint.radius = leftCode.radius / 2;
+      leftJoint.x = leftCode.targetX(-1, 0);
+      leftJoint.y = leftCode.targetY(-1, 0);
+      leftJoint.radius = leftCode.radius / 1.5;
       leftJoint.clear();
-      rightJoint.x = rightCode.targetX(1.5, 0);
-      rightJoint.y = rightCode.targetY(1.5, 0);
-      rightJoint.radius = rightCode.radius / 2;
+      rightJoint.x = rightCode.targetX(1, 0);
+      rightJoint.y = rightCode.targetY(1, 0);
+      rightJoint.radius = rightCode.radius / 1.5;
       rightJoint.clear();
     }
   }    

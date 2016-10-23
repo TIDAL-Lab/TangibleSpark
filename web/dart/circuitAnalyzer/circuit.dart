@@ -49,7 +49,7 @@ class Circuit {
     nodes = new List<Node>();
     edges = new List<Edge>();
 
-    //spark.exportJSON();
+    spark.exportJSON();
     findCircuitComponents();
     for (Connector cp in this.connectors) {
       print(cp.parent.id);
@@ -213,8 +213,8 @@ class Circuit {
           
         });
       }
-      var offsetX = 0;
-      var offsetY = 0;
+      var offsetX = 680;
+      var offsetY = 320;
       var scaleFactor = 1.0;
 
       
@@ -222,10 +222,10 @@ class Circuit {
                         'voltageDrop': c.voltageDrop,
                         'current': c.current,
                         'resistance': c.resistance,
-                        'startX': scaleFactor*(c.leftJoint.x -offsetX),
-                        'startY':scaleFactor*(offsetY - c.leftJoint.y),
+                        'startX': scaleFactor*(c.leftJoint.x - offsetX),
+                        'startY':scaleFactor*(c.leftJoint.y - offsetY),
                         'endX': scaleFactor*(c.rightJoint.x - offsetX),
-                        'endY': scaleFactor*(offsetY - c.rightJoint.y),
+                        'endY': scaleFactor*(c.rightJoint.y - offsetY),
                         'direction': c.direction,
                         'connection': rowArray,
                         'graphLabel': e.nodes[0].graphLabel
