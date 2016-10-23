@@ -127,7 +127,9 @@ class Spark {
     connectors.clear();
     for (int i=0; i<components.length; i++) {
       for (int j=i+1; j<components.length; j++) {
-        components[i].connect(components[j]);
+        if (components[i].visible && components[j].visible){
+          components[i].connect(components[j]);
+        }
       }
     }
 
@@ -151,7 +153,9 @@ class Spark {
     }
     print(JSON.encode(componentJSON));
     print(JSON.encode(connectorJSON));
+    print("smells like up dog in here");
   }
   
+
 }
   

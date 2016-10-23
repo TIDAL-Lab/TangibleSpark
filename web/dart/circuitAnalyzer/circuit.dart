@@ -103,8 +103,8 @@ class Circuit {
     xcor += cp2.x;
     ycor += cp2.y;
    }
-   xcor /= cp.attached.length + 1;
-   ycor /= cp.attached.length + 1;
+   xcor /= (cp.attached.length + 1);
+   ycor /= (cp.attached.length + 1);
    cp.x = xcor;
    cp.y =ycor;
    cp.adjustedPos = true;
