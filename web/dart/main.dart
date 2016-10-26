@@ -153,7 +153,7 @@ class Spark {
     }
     print(JSON.encode(componentJSON));
     print(JSON.encode(connectorJSON));
-    print("smells like up dog in here");
+    print("hello world!");
   }
   
 
