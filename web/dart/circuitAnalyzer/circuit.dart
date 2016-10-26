@@ -52,10 +52,11 @@ class Circuit {
     spark.exportJSON();
     findCircuitComponents();
     for (Connector cp in this.connectors) {
-      print(cp.parent.id);
-      print(cp.node.adjacents.length);
-      print(cp.node.isCollapsed());
-      print(cp.attached.length);
+      cp.adjustedPos = false;
+      // print(cp.parent.id);
+      // print(cp.node.adjacents.length);
+      // print(cp.node.isCollapsed());
+      // print(cp.attached.length);
     }
     print(nodes.length);
     makeCircuitConnections();
@@ -213,7 +214,7 @@ class Circuit {
           
         });
       }
-      var offsetX = 680;
+      var offsetX = 500;
       var offsetY = 320;
       var scaleFactor = 1.0;
 

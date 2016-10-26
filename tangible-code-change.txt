@@ -33,6 +33,7 @@ NOTE: I need to figure out coordinations for this new code.
 8. I need to modify 4 functions that reflect changes from touch to graph representation in the tabletop version:
 	a. addNewBranch
 	b. collapseNode
+	
 	c. removeBranch --> not being used
 	d. splitNode --> not being used
 	
@@ -45,4 +46,8 @@ NOTE: I need to figure out coordinations for this new code.
 2. fixed the issue with end points of connected connectors not overlapping:
 	--> this causes issue in the electron model code, as it should represent all the connected connectors as one single node,
 		otherwise it does not work correctly.
-	
+		
+*** notes on 10/19/2016
+1. adjusted the connector positions (1.5 distance --> 1 and radius 2 --> 1.5) in component.dart code, "set connect positions" part of code
+
+2. calibrating the position of components                                                                                                                    	
