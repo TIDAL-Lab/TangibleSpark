@@ -215,15 +215,11 @@ class Circuit {
           
         });
       }
-<<<<<<< Updated upstream
-      var offsetX = 500;
-      var offsetY = 320;
-=======
+
       //var offsetX = 680;
       //var offsetY = 320;
       var offsetX = 619;
       var offsetY = 334;
->>>>>>> Stashed changes
       var scaleFactor = 1.0;
 
       
