@@ -136,6 +136,7 @@ class Component {
       "x" : this.rightJoint.x,
       "y" : this.rightJoint.y
     };
+    json["resistance"] = this.resistance;
     return json;
   }
   
