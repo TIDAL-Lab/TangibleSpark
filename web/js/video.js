@@ -24,13 +24,14 @@ var videoConstraints = {
 
 video = document.querySelector("#video-stream");
 video.onpause = stopVideo;  // allows dart to stop the video
+
 document.querySelector("#camera-button").onclick = startStopVideo;
 
 
 navigator.mediaDevices.enumerateDevices()
   .then(gotDevices)
+  .then(startStopVideo)
   .catch(console.log("error enumerating devices."));
-
 
 function startStopVideo() {
   stream ? stopVideo() : startVideo();

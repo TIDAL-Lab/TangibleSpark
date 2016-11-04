@@ -70,10 +70,13 @@ class Component {
       if (top.code == leftCode.code) {
         _initLocation(top, leftCode, rightCode);
         foundLeft = true;
+        top.matched = true;
+        print("left is true");
       }
       else if (top.code == rightCode.code) {
         _initLocation(top, rightCode, leftCode);
         foundRight = true;
+        top.matched = true;
       }
     }
 

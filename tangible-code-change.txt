@@ -50,4 +50,17 @@ NOTE: I need to figure out coordinations for this new code.
 *** notes on 10/19/2016
 1. adjusted the connector positions (1.5 distance --> 1 and radius 2 --> 1.5) in component.dart code, "set connect positions" part of code
 
-2. calibrating the position of components                                                                                                                    	
+2. calibrating the position of components     
+
+*** notes on 11/04/2016      
+1. ISSUE: the browser crashes about every 60-70 seconds.
+	We figured the problem is with video streaming, so I added a timer (refreshTimer) to reload the page every 50 seconds
+	this prevents the crashing issue (main.dart)
+2. Also, Instead of using the camera button, the code starts streaming the video everytime the page is reloaded:
+	navigator.mediaDevices.enumerateDevices()
+  .then(gotDevices)
+  .then(startStopVideo)  (dart.js)
+3. Also, when running the code from command line, add a flag to give automatic access to camera
+   (to remove the hassle of giving the access everytime manually)
+   C:\tools\dartium\chrome.exe http://localhost:8087/web/index.html --use-fake-ui-for-media-stream
+																							

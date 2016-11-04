@@ -31,7 +31,8 @@ class TopCode {
   /** Buffer used to decode sectors */
   List<int> core = [ 0, 0, 0, 0, 0, 0, 0, 0 ];
   
-  
+  /* EB: if the detected topcode on canvas is matched to one of the topcodes in the list */
+  bool matched = false;
   TopCode();
   
   
@@ -222,7 +223,13 @@ class TopCode {
     ctx.arc(x, y, r - u, 0, PI * 2, true);
     ctx.fill();
     
-    ctx.fillStyle = "black";
+    if (this.matched) {
+      print("yes, it is matched");
+      ctx.fillStyle = "red";
+    }
+    else {
+      ctx.fillStyle = "black";
+    }
     ctx.beginPath();
     ctx.arc(x, y, r - u * 2, 0, PI * 2, true);
     ctx.fill();

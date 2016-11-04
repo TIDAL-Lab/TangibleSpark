@@ -52,6 +52,7 @@ class Spark {
   VideoElement video = null;
 
   Timer timer;
+  Timer refreshTimer;
 
   List<Component> components = new List<Component>();
   List<Connector> connectors = new List<Connector>();
@@ -71,6 +72,8 @@ class Spark {
     video.autoplay = true;
     video.onPlay.listen((e) {
       timer = new Timer.periodic(const Duration(milliseconds : 60), refreshCanvas);
+      /* refresh timer is added to reload the page and prevent the crashing problem */
+      refreshTimer = new Timer.periodic(const Duration(seconds : 50), refreshPage);
     });
 
     // initialize our components
@@ -90,6 +93,13 @@ class Spark {
     if (timer != null) timer.cancel();
   }
 
+/*
+ * Called every 30 seconds 
+ */
+  void refreshPage(Timer refreshTimer) {
+    refreshTimer.cancel();
+    window.location.reload();
+  }
 
 /*
  * Called 30 frames a second while the camera is on
@@ -118,9 +128,19 @@ class Spark {
     ImageData id = ctx.getImageData(0, 0, video.videoWidth, video.videoHeight);
     List<TopCode> codes = scanner.scan(id, ctx);
 
+    //if ( codes.length > 0 ) print(codes[0].radius);
+    List<Topcode> filteredCodes = new List<Topcode>();
+    for (TopCode top in codes) {
+      if (top.radius >= 15 && top.radius <= 18) {
+        filteredCodes.add(top);
+      }
+    }
+    if (codes.length != filteredCodes.length) {print("detected big codes");}
+    print(codes.length);
+
     // first find visible components
     for (Component c in components) {
-      c.locate(codes);
+      c.locate(filteredCodes);
     }
 
     // next connect components
