@@ -71,7 +71,6 @@ class Component {
         _initLocation(top, leftCode, rightCode);
         foundLeft = true;
         top.matched = true;
-        print("left is true");
       }
       else if (top.code == rightCode.code) {
         _initLocation(top, rightCode, leftCode);
@@ -151,7 +150,7 @@ class Component {
     match.unit = match.unit * 0.9 + found.unit * 0.1;
 
     // the orientation gets smoothed later by finding the angle between the left and right codes
-    match.orientation = found.orientation;
+    match.orientation = match.orientation * 0.5 + found.orientation * 0.5;
 
     // the position is pretty jittery, but we can't assume that it will 
     // stay as fixed as the unit

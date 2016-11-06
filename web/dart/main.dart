@@ -131,16 +131,18 @@ class Spark {
     //if ( codes.length > 0 ) print(codes[0].radius);
     List<Topcode> filteredCodes = new List<Topcode>();
     for (TopCode top in codes) {
+      //print(top.code);
       if (top.radius >= 15 && top.radius <= 18) {
         filteredCodes.add(top);
       }
+      //else print("this is a big code");
     }
-    if (codes.length != filteredCodes.length) {print("detected big codes");}
-    print(codes.length);
+    //if (codes.length != filteredCodes.length) {print("detected some big codes");}
+    //print(filteredCodes.length);
 
     // first find visible components
     for (Component c in components) {
-      c.locate(filteredCodes);
+      c.locate(codes);
     }
 
     // next connect components

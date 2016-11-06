@@ -100,8 +100,8 @@ class TopCode {
     double arca;
     double maxa = 0.0;
     
-    for (int a = 0; a < 5; a++) {
-      arca = a * ARC / 5.0;
+    for (int a = 0; a < 10; a++) {
+      arca = a * ARC / 10.0;
       c = readCode(scanner, unit, arca);
       if (c > maxc) {
         maxc = c;
@@ -224,7 +224,7 @@ class TopCode {
     ctx.fill();
     
     if (this.matched) {
-      print("yes, it is matched");
+      //print("yes, it is matched");
       ctx.fillStyle = "red";
     }
     else {
