@@ -220,7 +220,7 @@ class Circuit {
       //var offsetY = 320;
       var offsetX = 619;
       var offsetY = 334;
-      var scaleFactor = 2.0;
+      var scaleFactor = 1.0;
 
       
       var compObj = {   'type': c.type,

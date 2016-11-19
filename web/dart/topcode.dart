@@ -71,7 +71,7 @@ class TopCode {
 
 
   double angleBetween(TopCode b) {
-    return atan2(y - b.y, x - b.x);
+    return atan2(y - b.y, x - b.x) + PI * 2;
   }
 
    

@@ -68,12 +68,12 @@ class Component {
 
     for (TopCode top in codes) {
       if (top.code == leftCode.code) {
-        _initLocation(top, leftCode, rightCode);
+        _initLocation(top, leftCode);
         foundLeft = true;
         top.matched = true;
       }
       else if (top.code == rightCode.code) {
-        _initLocation(top, rightCode, leftCode);
+        _initLocation(top, rightCode);
         foundRight = true;
         top.matched = true;
       }
@@ -89,10 +89,10 @@ class Component {
     }
 
     // fine tune orientations of the left and right code 
-    if (foundLeft && foundRight) {
+    else if (foundLeft && foundRight) {
       num between = rightCode.angleBetween(leftCode);
-      leftCode.orientation = between;
-      rightCode.orientation = between;
+      //leftCode.orientation = between;
+      //rightCode.orientation = between;
     }
 
     // set connector positions
@@ -142,7 +142,9 @@ class Component {
     return json;
   }
   
-  void _initLocation(TopCode found, TopCode match, TopCode opposite) {
+  
+
+  void _initLocation(TopCode found, TopCode match) {
 
     // copy pose from the found topcode -- smoothing to prevent jitters
     // the unit size is unlikely to change much with a fixed camera position
