@@ -73,7 +73,7 @@ class Spark {
     video.onPlay.listen((e) {
       timer = new Timer.periodic(const Duration(milliseconds : 60), refreshCanvas);
       /* refresh timer is added to reload the page and prevent the crashing problem */
-      refreshTimer = new Timer.periodic(const Duration(seconds : 50), refreshPage);
+      /* refreshTimer = new Timer.periodic(const Duration(seconds : 50), refreshPage); */
     });
 
     // initialize our components

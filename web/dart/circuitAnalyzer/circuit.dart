@@ -218,9 +218,9 @@ class Circuit {
 
       //var offsetX = 680;
       //var offsetY = 320;
-      var offsetX = 619;
-      var offsetY = 334;
-      var scaleFactor = 1.0;
+      var offsetX = 626;
+      var offsetY = 422;
+      var scaleFactor = -2.0;
 
       
       var compObj = {   'type': c.type,
