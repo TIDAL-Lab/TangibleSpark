@@ -55,8 +55,7 @@ class Spark {
   Timer refreshTimer;
 
   List<Component> components = new List<Component>();
-  /* not using this list of connecters, as the circuit has its own list */
-  //List<Connector> connectors = new List<Connector>();
+  List<Connector> connectors = new List<Connector>();
 
   Circuit circuit = new Circuit();
 
@@ -72,9 +71,9 @@ class Spark {
     video = querySelector("#video-stream");
     video.autoplay = true;
     video.onPlay.listen((e) {
-      timer = new Timer.periodic(const Duration(milliseconds : 120), refreshCanvas);
+      timer = new Timer.periodic(const Duration(milliseconds : 60), refreshCanvas);
       /* refresh timer is added to reload the page and prevent the crashing problem */
-      refreshTimer = new Timer.periodic(const Duration(seconds : 60), refreshPage);
+      /* refreshTimer = new Timer.periodic(const Duration(seconds : 50), refreshPage); */
     });
 
     // initialize our components
@@ -95,7 +94,7 @@ class Spark {
   }
 
 /*
- * Called every t=45 seconds 
+ * Called every 30 seconds 
  */
   void refreshPage(Timer refreshTimer) {
     refreshTimer.cancel();
@@ -103,7 +102,7 @@ class Spark {
   }
 
 /*
- * Called (1000/timer = 8) frames a second while the camera is on
+ * Called 30 frames a second while the camera is on
  */
   void refreshCanvas(Timer timer) {
 
@@ -132,10 +131,10 @@ class Spark {
     //if ( codes.length > 0 ) print(codes[0].radius);
     List<Topcode> filteredCodes = new List<Topcode>();
     for (TopCode top in codes) {
-      //print(top.radius);
-      // if (top.radius >= 16 && top.radius <= 17.5) {
-      //   filteredCodes.add(top);
-      // }
+      //print(top.code);
+      if (top.radius >= 15 && top.radius <= 18) {
+        filteredCodes.add(top);
+      }
       //else print("this is a big code");
     }
     //if (codes.length != filteredCodes.length) {print("detected some big codes");}
@@ -147,7 +146,7 @@ class Spark {
     }
 
     // next connect components
-    //connectors.clear();
+    connectors.clear();
     for (int i=0; i<components.length; i++) {
       for (int j=i+1; j<components.length; j++) {
         if (components[i].visible && components[j].visible){
@@ -155,16 +154,9 @@ class Spark {
         }
       }
     }
+
     for (Component c in components) {
-      if (c.visible) {
-        // connectors.add(c.leftJoint);
-        // connectors.add(c.rightJoint);
-        // //print(c.leftJoint.adjustedPos);
-        // //print(c.rightJoint.adjustedPos);
-        // if (!c.leftJoint.adjustedPos) adjustPosition(c.leftJoint);
-        // if (!c.rightJoint.adjustedPos) adjustPosition(c.rightJoint);
-        c.draw(ctx);
-      }
+      if (c.visible) c.draw(ctx);
     }
 
     //exportJSON();
@@ -181,35 +173,9 @@ class Spark {
         connectorJSON.addAll(c.rightJoint.toJSON());
       }
     }
-    //print(JSON.encode(componentJSON));
+    print(JSON.encode(componentJSON));
     print(JSON.encode(connectorJSON));
-    //print("hello world!");
-  }
-
-  void adjustPosition(Connector cp) {
-    print("adjusting position");
-   // List<num> xcor = new List<num>();
-   // List<num> ycor = new List<num>();
-   // xcor.add(cp.x);
-   // ycor.add(cp.y);
-   num xcor = cp.x;
-   num ycor = cp.y;
-   for (Connector cp2 in cp.attached) {
-    xcor += cp2.x;
-    ycor += cp2.y;
-   }
-   xcor /= (cp.attached.length + 1);
-   ycor /= (cp.attached.length + 1);
-   cp.x = xcor;
-   cp.y =ycor;
-   cp.adjustedPos = true;
-  for (Connector cp2 in cp.attached) {
-    cp2.x = xcor;
-    cp2.y = ycor;
-    cp2.adjustedPos = true;
-   }
-   
-   //print(cp.x);
+    print("hello world!");
   }
   
 

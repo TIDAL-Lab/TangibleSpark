@@ -64,18 +64,3 @@ NOTE: I need to figure out coordinations for this new code.
    (to remove the hassle of giving the access everytime manually)
    C:\tools\dartium\chrome.exe http://localhost:8087/web/index.html --use-fake-ui-for-media-stream
 																							
-*** notes on 01/18/2017	
-1. trying to fix the issue with parallel circuits
-	i figured the problem is with the way the connectors are set, and their positions
-	after more investigation, i actually figured that the problem is with the way that the attached list is formed for each connector
-	the code only adds the connectors who overlap with certain radius of distance, so this causes problem as two connectors
-	might be actually connected by their distance is more than the set value.
-	I tried to add a function to circuit.dart (updateConnectors()) to fix this problem, but it needs more work [WIP]
-	so for now, as a quick remedy, i just changed the set radius value in overlaps() function of connector object
-	from (radius * 2.5) --> (radius * 3.5)
-		
-2. i changed the timer value from 60 ms to 120 ms, to lift some load from video analysis, no need to run it so frequent
-
-Later check the implementation for filtered codes (to remove the topcodes that are too close or too far)
-
-change the force --> make it less

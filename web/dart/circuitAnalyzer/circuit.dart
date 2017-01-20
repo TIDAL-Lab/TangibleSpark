@@ -51,12 +51,14 @@ class Circuit {
 
     
     findCircuitComponents();
-    // moved inside the updateConnectors() function
-    // for (Connector cp in this.connectors) {
-    //   cp.adjustedPos = false;
-    // }
+    for (Connector cp in this.connectors) {
+      cp.adjustedPos = false;
+      // print(cp.parent.id);
+      // print(cp.node.adjacents.length);
+      // print(cp.node.isCollapsed());
+      // print(cp.attached.length);
+    }
     print(nodes.length);
-    updateConnectors();
     makeCircuitConnections();
     print("solving the circuit");
     print(nodes.length);
@@ -75,39 +77,12 @@ class Circuit {
     }
   }
 
-  /* fix the problem with attached connectors with different list of connectors 
-  * the attached list is initially set based on overlapping criteria, so some
-  * connections might be missed, which will be missed by calling this function */
-  /* not the most efficient way to code this function, but works for now! */
-  void updateConnectors() {
-    for (Connector cp in this.connectors) {
-      cp.adjustedPos = false;
-    //   List farAttached = new List<Connector>();
-    //   for (Connector cp2 in cp.attached) {
-    //     for (Connector cp22 in cp2.attached) {
-    //       if (cp!=cp22 && !cp.attached.contains(cp22) && !farAttached.contains(cp22)) {
-    //         farAttached.add(cp22);
-    //         print(cp22.parent.type);
-    //       }
-               
-    //     }
-    //   }
-    //   cp.attached.addAll(farAttached);
-    }
-
-  }
-
   void makeCircuitConnections(){
     for (Connector cp in this.connectors) {
       print("component:" + cp.parent.id);
-      if (cp.attached.isEmpty) print("attached is empty");
-      else print(cp.attached.length);
       if (cp.isConnected()) {
         if (!cp.node.isCollapsed()) {
-          for (Connector cp2 in cp.attached) {
-            //collapseNode(cp, cp2);
-          }
-          //collapseNode(cp, cp.attached[0]);
+          collapseNode(cp, cp.attached[0]);
         }
         if (!cp.adjustedPos) adjustPosition(cp);
       }
@@ -243,8 +218,8 @@ class Circuit {
 
       //var offsetX = 680;
       //var offsetY = 320;
-      var offsetX = 624; // -14
-      var offsetY = 315; 
+      var offsetX = 621; // -14
+      var offsetY = 309; 
       var scaleFactor = 2.0;
 
       
