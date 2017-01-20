@@ -33,7 +33,9 @@ class Connector {
         {
           "from" : parent.id,
           "to" : other.parent.id,
-          "type": getJointType(this, other)
+          //"type": getJointType(this, other),
+          "x": other.x,
+          "y": other.y
         }
       );
     }
@@ -60,7 +62,7 @@ class Connector {
 
 
   bool overlaps(Connector other) {
-    return sqrt((other.x - x) * (other.x - x) + (other.y - y) * (other.y - y)) < radius * 2.5;
+    return sqrt((other.x - x) * (other.x - x) + (other.y - y) * (other.y - y)) < radius * 3.5;
   }
 
 
