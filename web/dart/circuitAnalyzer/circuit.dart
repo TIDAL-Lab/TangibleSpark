@@ -52,11 +52,11 @@ class Circuit {
     
     findCircuitComponents();
     // moved inside the updateConnectors() function
-    // for (Connector cp in this.connectors) {
-    //   cp.adjustedPos = false;
-    // }
+    for (Connector cp in this.connectors) {
+      cp.adjustedPos = false;
+    }
     print(nodes.length);
-    updateConnectors();
+    //updateConnectors();
     makeCircuitConnections();
     print("solving the circuit");
     print(nodes.length);
@@ -105,7 +105,7 @@ class Circuit {
       if (cp.isConnected()) {
         if (!cp.node.isCollapsed()) {
           for (Connector cp2 in cp.attached) {
-            //collapseNode(cp, cp2);
+            collapseNode(cp, cp2);
           }
           //collapseNode(cp, cp.attached[0]);
         }
@@ -227,6 +227,8 @@ class Circuit {
     
     //var myObj = new JsArray();
     var myObj = [];
+    var myStamp = 1;
+    //myObj.add(myStamp);
     //findConnectedComponents();
     var c, connectionArray, rowArray;
     for (Edge e in this.edges) {
@@ -264,10 +266,39 @@ class Circuit {
         myObj.add(compObj);
 
 
+
     }
     //print(JSON.encode(myObj));
     
-    
+    // old version, using parse
+    //sendDataParse(myObj);
+
+    sendDataWebServer(myObj);
+
+  }
+
+  void sendDataWebServer(myObj) {
+    String json = JSON.encode(myObj);
+    HttpRequest request = new HttpRequest(); // create a new XHR
+
+    // add an event handler that is called when the request finishes
+    request.onReadyStateChange.listen((_) {
+     if (request.readyState == HttpRequest.DONE &&
+         (request.status == 200 || request.status == 0)) {
+       // data saved OK.
+       print(request.responseText); // output the response from the server
+     }
+   });
+
+   // POST the data to the server
+   var url = "http://127.0.0.1:8000";
+   request.open("POST", url, async: false);
+
+ 
+   request.send(json); // perform the async POST
+  }
+
+  void sendDataParse(myObj) {
     //JsObject.jsify() constructor convert a JSON-like Dart object to a JS object
     myObj = new JsObject.jsify(myObj);
     
@@ -280,6 +311,7 @@ class Circuit {
     sendParse.callMethod('doUpdateParse'); // call its method "doUpdateParse"
     //sendParse.callMethod('doUpdateParse');
   }
+
   
   /** called to create the array of codes for the component connections status
   @param c    component

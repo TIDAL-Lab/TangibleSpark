@@ -18,7 +18,7 @@ part 'scanner.dart';
 part 'topcode.dart';
 part 'utils.dart';
 
-part 'circuitAnalyzer/Circuit.dart';
+part 'circuitAnalyzer/circuit.dart';
 part 'circuitAnalyzer/Matrix.dart';
 part 'circuitAnalyzer/LUDecomposition.dart';
 part 'circuitAnalyzer/QRDecomposition.dart';
@@ -130,7 +130,7 @@ class Spark {
     List<TopCode> codes = scanner.scan(id, ctx);
 
     //if ( codes.length > 0 ) print(codes[0].radius);
-    List<Topcode> filteredCodes = new List<Topcode>();
+    List<TopCode> filteredCodes = new List<TopCode>();
     for (TopCode top in codes) {
       //print(top.radius);
       // if (top.radius >= 16 && top.radius <= 17.5) {
